@@ -4,6 +4,7 @@ import numpy as np
 from gensim.models import LsiModel
 from gensim.corpora import Dictionary
 from scipy.spatial.distance import cosine
+import joblib
 
 class LetorClass:
 
@@ -155,4 +156,8 @@ if __name__ == '__main__':
     print("SERP/Ranking :")
     for (did, score) in sorted_did_scores:
         print(did, score)
+
+    joblib.dump(letor.dictionary, "dict.pkl")
+    joblib.dump(letor.model, "model.pkl")
+    joblib.dump(letor.ranker, "ranker.pkl")
         
