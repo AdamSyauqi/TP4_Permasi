@@ -21,10 +21,14 @@
 <body>
     <div class="container">
         <form action="{% url 'search:index' %}" method="get">
-            <label for="search_bar" class="form-label">Medsearch</label>
-            <input type="text" class="form-control" id="search_bar" aria-describedby="emailHelp" name="search_bar", value="{{ query|default_if_none:'' }}">
-            <!-- <div id="search_help" class="form-text">We'll never share your email with anyone else.</div> -->
-            <button type="submit">Submit</button>
+            <div class="mb-3">
+                <h3 class="text-center">Medsearch</h3>
+                <input type="text" class="form-control" id="search_bar" aria-describedby="emailHelp" name="search_bar", value="{{ query|default_if_none:'' }}">
+                <div id="search_help" class="form-text">Please type your query above</div>
+            </div>
+            <div class="mb-3">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
         </form>
         {% for doc_id, text in result.items %}
             <a href="{% url 'search:content' doc_id %}">{{ doc_id }}.txt</a>
