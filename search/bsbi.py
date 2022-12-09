@@ -17,9 +17,9 @@ else:
 nltk.download('stopwords')
 nltk.download('punkt')
 
-from index import InvertedIndexReader, InvertedIndexWriter
-from util import IdMap, sorted_merge_posts_and_tfs
-from compression import VBEPostings
+from .index import InvertedIndexReader, InvertedIndexWriter
+from .util import IdMap, sorted_merge_posts_and_tfs
+from .compression import VBEPostings
 from tqdm import tqdm
 from nltk import word_tokenize
 from nltk.corpus import stopwords 

@@ -1,28 +1,32 @@
 import re
-from bsbi import BSBIIndex
-from compression import VBEPostings
-from letor import LetorClass
+from .bsbi import BSBIIndex
+from .compression import VBEPostings
+from .letor import LetorClass
 import numpy as np
 import joblib
+import sys
+import os
 
-def eval_letor_content(k = 10, query = "the crystalline lens in vertebrates, including humans."):
+
+def eval_letor_content(k = 100, query = "the crystalline lens in vertebrates, including humans."):
 
     letor = LetorClass()
+    this_dir = os.path.dirname(__file__)
 
-    letor.dictionary = joblib.load("dict.pkl")
-    letor.ranker = joblib.load("ranker.pkl")
-    letor.model = joblib.load("model.pkl")
+    letor.dictionary = joblib.load(os.path.join(this_dir, "dict.pkl"))
+    letor.ranker = joblib.load(os.path.join(this_dir, "ranker.pkl"))
+    letor.model = joblib.load(os.path.join(this_dir, "model.pkl"))
 
-    BSBI_instance = BSBIIndex(data_dir='collection',
+    BSBI_instance = BSBIIndex(data_dir=os.path.join(this_dir, 'collection'),
                               postings_encoding=VBEPostings,
-                              output_dir='index')
+                              output_dir=os.path.join(this_dir,'index'))
 
     X_unseen = []
 
     docs = []
 
     for (_, doc) in BSBI_instance.bm_25(query, k=k):
-        text = open("collection/" + doc).read()
+        text = open(os.path.join(this_dir, "collection/") + doc).read()
         text = text.lower()
         did = int(re.search(r'.*\/(.*)\.txt', doc).group(1))
         docs.append([did, text])
@@ -35,9 +39,7 @@ def eval_letor_content(k = 10, query = "the crystalline lens in vertebrates, inc
     did_scores = [x for x in zip([did for (did, _) in docs], score)]
     sorted_did_scores = sorted(did_scores, key=lambda tup: tup[1], reverse=True)
 
-    for (dids, score) in sorted_did_scores:
-        print(dids, score)
-
+    return sorted_did_scores
 
 if __name__ == '__main__':
     eval_letor_content()
