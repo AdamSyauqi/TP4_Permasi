@@ -31,15 +31,19 @@ def eval_letor_content(k = 100, query = "the crystalline lens in vertebrates, in
         did = int(re.search(r'.*\/(.*)\.txt', doc).group(1))
         docs.append([did, text])
 
-    for _, doc in docs:
-        X_unseen.append(letor.features(query.split(), doc.split()))
+    if len(docs) < 1:
+        return None
 
-    X_unseen = np.array(X_unseen)
-    score = letor.predict_ranker(X_unseen)
-    did_scores = [x for x in zip([did for (did, _) in docs], score)]
-    sorted_did_scores = sorted(did_scores, key=lambda tup: tup[1], reverse=True)
+    else:
+        for _, doc in docs:
+            X_unseen.append(letor.features(query.split(), doc.split()))
 
-    return sorted_did_scores
+        X_unseen = np.array(X_unseen)
+        score = letor.predict_ranker(X_unseen)
+        did_scores = [x for x in zip([did for (did, _) in docs], score)]
+        sorted_did_scores = sorted(did_scores, key=lambda tup: tup[1], reverse=True)
+
+        return sorted_did_scores
 
 if __name__ == '__main__':
     eval_letor_content()
