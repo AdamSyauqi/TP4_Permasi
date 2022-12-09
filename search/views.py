@@ -11,6 +11,7 @@ def index(request):
     if query == None or query == "":
         context = {
             'query': query,
+            'signal': -1
         }
         return render(request, 'search/index.html', context)
     else:
@@ -23,6 +24,7 @@ def index(request):
             context = {
                 'result': result,
                 'query': query,
+                'signal': 0
             }
             return render(request, 'search/index.html', context)
         else:
@@ -36,6 +38,7 @@ def index(request):
             context = {
                 'result': result,
                 'query': query,
+                'signal': 1
             }
             return render(request, 'search/index.html', context)
 

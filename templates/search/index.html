@@ -30,7 +30,7 @@
                 <button type="submit" class="btn btn-primary">Search</button>
             </div>
         </form>
-        {% if result|length == 0 %}
+        {% if signal == 0 %}
             <h3 class="text-center">Sorry, no results were found. Try another query</h3>
         {% else %}
         {% for doc_id, text in result.items %}
