@@ -6,6 +6,12 @@ import os
 
 # Create your views here.
 
+def error_500(request):
+    context = {}
+    response = render(request, 'search/500.html', context=context)
+    response.status_code = 500
+    return response
+
 def index(request):
     query = request.GET.get('search_bar')
     if query == None or query == "":
